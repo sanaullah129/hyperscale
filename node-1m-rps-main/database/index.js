@@ -4,6 +4,9 @@ import keys from "./keys.js";
 // Read PG_CONNECT env variable to see whether or not to connect to PostgreSQL
 // If PG_CONNECT is set to "false", we skip the connection (useful for testing without a DB)
 const shouldConnect = process.env.PG_CONNECT !== "false";
+const useSSL =
+  process.env.PG_SSL === "true" ||
+  (process.env.PG_SSL !== "false" && process.env.NODE_ENV === "production");
 
 export const pool = shouldConnect
   ? new pkg.Pool({
@@ -12,12 +15,7 @@ export const pool = shouldConnect
       database: keys.dbDatabase,
       password: keys.dbPassword,
       port: keys.dbPort,
-      ssl:
-        process.env.NODE_ENV === "production"
-          ? {
-              rejectUnauthorized: false,
-            }
-          : false,
+      ssl: useSSL ? { rejectUnauthorized: false } : false,
     })
   : null;
 

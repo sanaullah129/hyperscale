@@ -11,6 +11,7 @@ module.exports = {
         NODE_ENV: "production",
         REDIS_CLUSTER: "false", // Set to "true" to enable Redis Cluster, otherwise it will use a single Redis instance
         PG_CONNECT: "true", // Set to "true" to enable PostgreSQL connection
+        PG_SSL: process.env.PG_SSL || "false",
       },
     },
   ],
